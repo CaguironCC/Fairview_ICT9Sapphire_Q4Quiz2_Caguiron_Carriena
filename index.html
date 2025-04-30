@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grade Calculator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+            font-family: Arial, sans-serif;
+            max-width: 1000px; 
+            margin: 0 auto;
+            padding: 0;
+            background-image: url("https://images.squarespace-cdn.com/content/v1/664c7ae50eea9c731b37e817/02a3d95d-54d7-4f60-8141-58b50ec42015/OBMC+Intermediate+classroom+3.jpg"); 
+            background-size: cover;
+        }
+        .wrapper {
+            padding: 30px;
+            padding-bottom: 70px; 
+        }
+        .container1 {
+            background-color: #003E78;
+            color: white;
+            padding-top: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px; 
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            min-height: 300px;
+            margin-bottom: 30px;
+        }
+        h1 {
+            color: white; 
+            text-align: center;
+            margin-bottom: 30px; 
+        }
+        footer {
+            background-color: #003E78;
+            width: 100%;
+            padding: 10px;
+            color: white;
+            text-align: center;
+            font-size: 0.9em;
+            position: absolute;
+            bottom: 0;
+            left: 0;
+        }
+        .rating {
+            font-weight: bold;
+            font-size: 1.2em;
+            margin: 30px 0; 
+            padding: 15px;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .excellent {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .above-satisfactory {
+            background-color: #cce5ff;
+            color: #004085;
+        }
+        .satisfactory {
+            background-color: #fff3cd;
+            color: #856404;
+        }
+        .needs-improvement {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .poor {
+            background-color: #e2e3e5;
+            color: #383d41;
+        }
+        details {
+            margin-bottom: 20px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+        }
+        footer a {
+            color: white;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="container1">
+            <h1>Score Analyzer</h1>
+        </div>
+
+        <div class="container">    
+            <details ontoggle="toggleInstructions()">
+                <summary>Click for Instructions</summary>
+                <p>Enter your grades in the following subjects. 
+                The calculator will compute your average and display a rating based on that average.</p>
+            </details>
+            
+            <div class="mb-3">
+                <label for="filipino" class="form-label">Filipino:</label>
+                <input type="number" class="form-control" id="filipino" min="70" max="100">
+            </div>
+            <div class="mb-3">
+                <label for="math" class="form-label">Math:</label>
+                <input type="number" class="form-control" id="math" min="70" max="100">
+            </div>
+            <div class="mb-3">
+                <label for="social" class="form-label">Social Studies:</label>
+                <input type="number" class="form-control" id="social" min="70" max="100">
+            </div>
+            <br>
+            <button class="btn btn-primary" onclick="calculateAverage()">Get Rating</button>
+            
+            <div id="result" class="rating" style="display: none;"></div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Source: <a href="https://obmontessori.edu.ph/fairview" target="_blank">BG Image</a></p>
+        <p>© Caguiron, Carriena</p>
+    </footer>
+
+    <script>
+        function toggleInstructions() {
+            console.log("Instructions toggled");
+        }
+        
+        function calculateAverage() {
+            const filipino = parseFloat(document.getElementById('filipino').value);
+            const math = parseFloat(document.getElementById('math').value);
+            const social = parseFloat(document.getElementById('social').value);
+            
+            if (isNaN(filipino) || isNaN(math) || isNaN(social)) {
+                alert("Please enter valid grades for all subjects");
+                return;
+            }
+            
+            const sum = filipino + math + social;
+            const average = Math.round((sum / 3) * 100) / 100; // Round to 2 decimal places
+            
+            let rating, ratingClass;
+            
+            switch(true) {
+                case (average >= 94):
+                    rating = "Excellent";
+                    ratingClass = "excellent";
+                    break;
+                case (average >= 87):
+                    rating = "Above Satisfactory";
+                    ratingClass = "above-satisfactory";
+                    break;
+                case (average >= 80):
+                    rating = "Satisfactory";
+                    ratingClass = "satisfactory";
+                    break;
+                case (average >= 75):
+                    rating = "Needs Improvement";
+                    ratingClass = "needs-improvement";
+                    break;
+                case (average >= 70):
+                    rating = "Poor";
+                    ratingClass = "poor";
+                    break;
+                default:
+                    rating = "Below Passing";
+                    ratingClass = "poor";
+            }
+            
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `Your average is ${average.toFixed(2)} - ${rating}`;
+            resultDiv.className = `rating ${ratingClass}`;
+            resultDiv.style.display = "block";
+        }
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
